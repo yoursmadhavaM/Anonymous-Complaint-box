@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Anonymous Complaint Box</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+  <img src="http://rvrjc.ac.in/ximages/2.2%20Header%20(1).png" alt="College Banner" class="college-banner">
+  <!-- Admin Welcome Modal -->
+  <div id="adminWelcomeModal" class="admin-welcome-modal">
+    <div class="admin-welcome-content">
+      <h2>Welcome, Admin!</h2>
+      <p>Click below to enter the Admin Dashboard.</p>
+      <button id="adminEnterBtn">Go to Admin Dashboard</button>
+    </div>
+  </div>
+  <div class="dashboard-container" style="display:none;">
+    <nav class="dashboard-sidebar">
+        <ul>
+            <li class="active" data-section="complaints"><i class="fa-solid fa-list"></i> Complaints Submitted</li>
+            <li data-section="resolved"><i class="fa-solid fa-check-circle"></i> Complaints Resolved</li>
+            <li data-section="tokens"><i class="fa-solid fa-key"></i> All Tokens</li>
+            <li data-section="credits"><i class="fa-solid fa-star"></i> Credit Points</li>
+            <li class="sidebar-divider"></li>
+            <li class="sidebar-heading">Announcements</li>
+            <li data-section="announcementRequests"><i class="fa-solid fa-inbox"></i> Announcement Requests</li>
+            <li data-section="announcements"><i class="fa-solid fa-bullhorn"></i> Announcements</li>
+        </ul>
+    </nav>
+    <main class="dashboard-main">
+      <div class="filter-bar">
+        <label>Status:
+          <select id="filterStatus">
+            <option value="">All</option>
+            <option value="pending">Pending</option>
+            <option value="resolved">Resolved</option>
+          </select>
+        </label>
+        <label>Type:
+          <select id="filterType">
+            <option value="">All</option>
+            <option value="Hostel">Hostel</option>
+            <option value="Academics">Academics</option>
+            <option value="Facilities">Facilities</option>
+            <option value="Ragging">Ragging</option>
+            <option value="Others">Others</option>
+          </select>
+        </label>
+        <button id="refreshBtn"><i class="fa-solid fa-rotate"></i> Refresh</button>
+      </div>
+      <section id="complaintsSection" class="dashboard-section" style="display:block;">
+        <h2>Complaints Submitted</h2>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>User/Token</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="complaintsTableBody"></tbody>
+        </table>
+      </section>
+      <section id="resolvedSection" class="dashboard-section" style="display:none;">
+        <h2>Complaints Resolved</h2>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>User/Token</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="resolvedComplaintsTableBody"></tbody>
+        </table>
+      </section>
+      <section id="tokensSection" class="dashboard-section" style="display:none;">
+        <h2>All Tokens</h2>
+        <div id="adminTokensList">Loading tokens...</div>
+      </section>
+      <section id="creditsSection" class="dashboard-section" style="display:none;">
+        <h2>Credit Points</h2>
+        <div id="adminCreditsList">Loading credits...</div>
+      </section>
+      <section id="announcementRequestsSection" class="dashboard-section" style="display:none;">
+          <h2>Announcement Requests</h2>
+          <div id="adminAnnouncementRequestsList">Loading requests...</div>
+      </section>
+      <section id="announcementsSection" class="dashboard-section" style="display:none;">
+          <h2>Announcements</h2>
+          <form id="adminAnnouncementForm" style="margin-bottom:18px;">
+              <input type="text" id="adminAnnouncementText" placeholder="Add new announcement..." style="width:70%;padding:8px;">
+              <button type="submit" style="background:#ff1744;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-weight:600;">Add</button>
+          </form>
+          <div id="adminAnnouncementResult" style="margin-bottom:10px;color:#388e3c;"></div>
+          <div id="adminAnnouncementsList">Loading announcements...</div>
+      </section>
+    </main>
+  </div>
+  <!-- Modal for complaint details -->
+  <div id="detailsModal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <button id="closeDetailsModalBtn" style="float:right; background:none; border:none; font-size:1.5rem; color:#4f8cff; cursor:pointer;" aria-label="Close">&times;</button>
+      <h2>Complaint Details</h2>
+      <div id="detailsContent"></div>
+    </div>
+  </div>
+  <!-- Announcement Bar (populated by script.js) -->
+  <div id="announcementBar" class="announcement-bar" style="display:none;"></div>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <!-- Your main JS -->
+  <script src="script.js"></script>
+</body>
+</html> 

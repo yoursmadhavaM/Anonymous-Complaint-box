@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Complaint Status</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <img src="http://rvrjc.ac.in/ximages/2.2%20Header%20(1).png" alt="College Banner" class="college-banner">
+    <div class="form-container">
+        <h2>Check Complaint Status</h2>
+        <form id="statusForm">
+            <label for="token">Enter Your Complaint Token:</label>
+            <input type="text" id="token" name="token" required>
+            <button type="submit">Check Status</button>
+        </form>
+        <div id="statusResult"></div>
+        <p><a href="index.html">Back to Complaint Submission</a></p>
+    </div>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <!-- Your main JS -->
+    <script src="script.js"></script>
+</body>
+</html> 
