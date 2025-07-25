@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Complaint Submission</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <!-- Fixed College Banner -->
+    <img src="http://rvrjc.ac.in/ximages/2.2%20Header%20(1).png" alt="College Banner" class="college-banner">
+
+    <!-- Welcome Modal -->
+    <div id="authModal" class="modal-overlay">
+        <div class="modal-content">
+            <i class="fa-solid fa-user-graduate welcome-icon"></i>
+            <h2>Welcome!</h2>
+            <p>Please choose how you want to proceed:</p>
+            <button id="modalLoginBtn"><i class="fa-solid fa-right-to-bracket"></i> Login / Register</button>
+            <button id="modalAnonBtn"><i class="fa-solid fa-user-secret"></i> Submit Anonymously</button>
+            <button id="openStatusModalBtn" class="status-btn-green" type="button"><i class="fa-solid fa-magnifying-glass"></i> Check Complaint Status</button>
+        </div>
+    </div>
+
+    <!-- Inline Status Check Modal -->
+    <div id="statusModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <button id="closeStatusModalBtn" style="float:right; background:none; border:none; font-size:1.5rem; color:#4f8cff; cursor:pointer;" aria-label="Close">&times;</button>
+            <h2>Check Complaint Status</h2>
+            <form id="inlineStatusForm">
+                <label for="inlineToken">Enter Your Complaint Token:</label>
+                <input type="text" id="inlineToken" name="inlineToken" required>
+                <button type="submit">Check Status</button>
+            </form>
+            <div id="inlineStatusResult"></div>
+        </div>
+    </div>
+
+    <!-- Announcement Bar (populated by script.js) -->
+    <div id="announcementBar" class="announcement-bar" style="display:none;"></div>
+    <button id="requestAnnouncementBtn" class="request-announcement-btn">Request Announcement</button>
+
+    <!-- Announcement Request Modal -->
+    <div id="announcementModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <button id="closeAnnouncementModalBtn" style="float:right; background:none; border:none; font-size:1.5rem; color:#e53935; cursor:pointer;" aria-label="Close">&times;</button>
+            <h2>Request Announcement</h2>
+            <form id="announcementRequestForm">
+                <label for="announcementText">Announcement Text:</label>
+                <textarea id="announcementText" name="announcementText" rows="3" required placeholder="Enter your announcement request..."></textarea>
+                <button type="submit">Submit Request</button>
+            </form>
+            <div id="announcementRequestResult" style="margin-top:10px;color:#388e3c;"></div>
+        </div>
+    </div>
+
+    <!-- Complaint Form (hidden until user chooses) -->
+    <h1 id="complaintTitle" style="display:none;">Submit a Complaint</h1>
+    <form id="complaintForm" style="display:none;">
+        <label for="name">Name (optional):</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" autocomplete="name">
+        <label for="email">Email (optional):</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email">
+        <label for="complaintType">Complaint Type:</label>
+        <select id="complaintType" name="complaintType" required autocomplete="off">
+            <option value="">Select type</option>
+            <option value="Hostel">Hostel</option>
+            <option value="Academics">Academics</option>
+            <option value="Facilities">Facilities</option>
+            <option value="Ragging">Ragging</option>
+            <option value="Others">Others</option>
+        </select>
+        <label for="description">Complaint Description:</label>
+        <textarea id="description" name="description" rows="4" required placeholder="Describe your complaint..." autocomplete="off"></textarea>
+        <label for="requirement">What do you require?</label>
+        <select id="requirement" name="requirement" required autocomplete="off">
+            <option value="">Select requirement</option>
+            <option value="Repair">Repair</option>
+            <option value="Counseling">Counseling</option>
+            <option value="Investigation">Investigation</option>
+            <option value="Other">Other (please specify below)</option>
+        </select>
+        <input type="text" id="otherRequirement" name="otherRequirement" placeholder="If other, specify here" style="display:none;" autocomplete="off">
+        <div>
+            <input type="checkbox" id="anonymous" name="anonymous">
+            <label for="anonymous">Submit anonymously</label>
+        </div>
+        <button type="submit">Submit Complaint</button>
+    </form>
+
+    <!-- Token Display Section -->
+    <div id="tokenSection" style="display:none;">
+        <h2>Your Complaint Token</h2>
+        <p id="tokenDisplay"></p>
+        <p>Save this token to check your complaint status in the future.</p>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <!-- Your main JS -->
+    <script src="script.js"></script>
+</body>
+</html> 

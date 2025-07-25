@@ -1,0 +1,636 @@
+/*
+  Global Styles for Anonymous Complaint Box
+  Covers: body, forms, modals, dashboard, announcement bar, buttons, sidebar, mobile responsiveness
+*/
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #e0f7fa 0%, #fffde4 100%);
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 110px;
+    /* Subtle SVG pattern overlay */
+    position: relative;
+}
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.13;
+    background: url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="2" fill="%23ffd600"/><circle cx="50" cy="50" r="2" fill="%234f8cff"/><rect x="25" y="25" width="10" height="10" rx="2" fill="%2300bfae"/></svg>');
+}
+
+/* Form and Modal Containers */
+.form-container, .modal-content, #tokenSection {
+    position: relative;
+    z-index: 1;
+}
+
+h1 {
+    margin-top: 40px;
+    color: #2d3a4b;
+}
+
+form {
+    background: #fff;
+    padding: 32px 28px;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(44, 62, 80, 0.08);
+    margin-top: 24px;
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+label {
+    font-weight: 500;
+    color: #34495e;
+    margin-bottom: 4px;
+}
+
+input[type="text"],
+input[type="email"],
+select,
+textarea {
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #f9fafb;
+    transition: border 0.2s;
+}
+input[type="text"]:focus,
+input[type="email"]:focus,
+select:focus,
+textarea:focus {
+    border: 1.5px solid #4f8cff;
+    outline: none;
+    background: #fff;
+}
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+button[type="submit"] {
+    background: #4f8cff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.2s;
+}
+button[type="submit"]:hover {
+    background: #2563eb;
+}
+
+#tokenSection {
+    background: #e6f7ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 10px;
+    padding: 24px 20px;
+    margin-top: 32px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    color: #2563eb;
+}
+#tokenDisplay {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 12px 0;
+}
+
+input[type="checkbox"] {
+    accent-color: #4f8cff;
+    margin-right: 6px;
+}
+
+/* Announcement Bar and Request Button */
+.announcement-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 2001;
+    background: linear-gradient(90deg, #ff1744 0%, #ff8a65 100%);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.08rem;
+    padding: 12px 0;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(255,23,68,0.13);
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #b71c1c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+.announcement-bar .alert-icon {
+    font-size: 1.3em;
+    margin-right: 8px;
+    color: #fff;
+    animation: pulse 1.2s infinite alternate;
+}
+@keyframes pulse {
+    0% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+.request-announcement-btn {
+    position: fixed;
+    top: 70px;
+    right: 36px;
+    background: linear-gradient(90deg, #ff1744 0%, #ff8a65 100%);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 2002;
+    box-shadow: 0 2px 8px rgba(255,23,68,0.13);
+    transition: background 0.2s;
+}
+.request-announcement-btn:hover {
+    background: linear-gradient(90deg, #d50000 0%, #ff7043 100%);
+}
+
+/* Announcement Bar as Scrolling Ticker */
+.announcement-bar.announcement-ticker {
+    overflow: hidden;
+    white-space: nowrap;
+    position: fixed;
+    top: 100px; /* below the banner */
+    left: 0;
+    width: 100vw;
+    z-index: 2001;
+    background: linear-gradient(90deg, #ff1744 0%, #ff8a65 100%);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.08rem;
+    padding: 12px 0;
+    text-align: left;
+    box-shadow: 0 2px 8px rgba(255,23,68,0.13);
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #b71c1c;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.announcement-bar.announcement-ticker span.ticker-content {
+    display: inline-block;
+    padding-left: 100vw;
+    animation: ticker-scroll 18s linear infinite;
+}
+@keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+/* College Banner */
+.college-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100vw;
+    height: 100px;
+    min-height: 60px;
+    object-fit: contain;
+    display: block;
+    z-index: 1000;
+    border-bottom: 2px solid #e0e7ef;
+    background: #fff;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(44, 62, 80, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+.modal-content {
+    background: #fff;
+    padding: 36px 32px 28px 32px;
+    border-radius: 14px;
+    box-shadow: 0 8px 32px rgba(44, 62, 80, 0.18);
+    text-align: center;
+    min-width: 300px;
+    max-width: 90vw;
+}
+.modal-content h2 {
+    margin-top: 0;
+    color: #2d3a4b;
+}
+.modal-content p {
+    margin-bottom: 24px;
+    color: #34495e;
+}
+.modal-content button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px 0;
+    font-size: 1.08rem;
+    font-weight: 600;
+    border-radius: 6px;
+    border: 1.5px solid #4f8cff;
+    background: #fff;
+    color: #4f8cff;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.modal-content button i {
+    margin-right: 8px;
+}
+.modal-content button:hover {
+    background: #4f8cff;
+    color: #fff;
+}
+
+.welcome-icon {
+    font-size: 3.5rem;
+    color: #4f8cff;
+    margin-bottom: 18px;
+    display: block;
+    text-align: center;
+}
+
+/* Status Check Section */
+.status-check-section {
+    background: #fff;
+    margin: 32px auto 0 auto;
+    padding: 28px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(44, 62, 80, 0.08);
+    max-width: 420px;
+    width: 100%;
+    text-align: left;
+    position: relative;
+    z-index: 1;
+}
+.status-check-section h2 {
+    margin-top: 0;
+    color: #2d3a4b;
+}
+.status-check-section label {
+    font-weight: 500;
+    color: #34495e;
+}
+.status-check-section input[type="text"] {
+    margin: 10px 0 16px 0;
+    width: 100%;
+}
+.status-check-section button {
+    background: #4f8cff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 0;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: 100%;
+}
+.status-check-section button:hover {
+    background: #2563eb;
+}
+#inlineStatusResult {
+    margin-top: 16px;
+    font-weight: 500;
+    color: #2563eb;
+    min-height: 24px;
+}
+
+.status-btn-green {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #43a047;
+    color: #fff;
+    border: 1.5px solid #43a047;
+    border-radius: 6px;
+    padding: 10px 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 16px 0 8px 0;
+    transition: background 0.2s, color 0.2s;
+    width: 100%;
+}
+.status-btn-green i {
+    font-size: 1.2em;
+}
+.status-btn-green:hover {
+    background: #388e3c;
+    color: #fff;
+}
+
+/* Dashboard Layout */
+.dashboard-container {
+    display: flex;
+    max-width: 1100px;
+    margin: 40px auto 0 auto;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(44, 62, 80, 0.08);
+    min-height: 500px;
+    position: relative;
+    z-index: 1;
+}
+.dashboard-sidebar {
+    min-width: 210px;
+    background: #f4f6fb;
+    border-top-left-radius: 14px;
+    border-bottom-left-radius: 14px;
+    padding: 32px 0 0 0;
+    box-shadow: 2px 0 8px rgba(44, 62, 80, 0.03);
+}
+.dashboard-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.dashboard-sidebar li {
+    padding: 16px 32px;
+    font-size: 1.08rem;
+    color: #34495e;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-left: 4px solid transparent;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.dashboard-sidebar li.active, .dashboard-sidebar li:hover {
+    background: #e3f2fd;
+    color: #2563eb;
+    border-left: 4px solid #4f8cff;
+}
+.dashboard-main {
+    flex: 1;
+    padding: 40px 36px;
+    min-width: 0;
+}
+.dashboard-section {
+    display: block;
+}
+
+/* Sidebar Divider and Heading */
+.sidebar-divider {
+    border-bottom: 1.5px solid #e0e7ef;
+    margin: 12px 0;
+    list-style: none;
+    height: 0;
+}
+.sidebar-heading {
+    font-size: 0.98rem;
+    color: #888;
+    font-weight: bold;
+    padding: 8px 32px 4px 32px;
+    list-style: none;
+    cursor: default;
+}
+
+/* Logout Button */
+.logout-btn {
+    position: fixed;
+    top: 22px;
+    right: 36px;
+    background: #fff;
+    color: #e53935;
+    border: 1.5px solid #e53935;
+    border-radius: 6px;
+    padding: 8px 18px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    z-index: 1100;
+    transition: background 0.2s, color 0.2s;
+}
+.logout-btn i {
+    margin-right: 8px;
+}
+.logout-btn:hover {
+    background: #e53935;
+    color: #fff;
+}
+
+/* Complaint Item and Actions */
+.complaint-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.04);
+}
+.complaint-actions button {
+    background: #fff;
+    color: #4f8cff;
+    border: 1.5px solid #4f8cff;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 0.98rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-left: 8px;
+    transition: background 0.2s, color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.complaint-actions button:hover {
+    background: #4f8cff;
+    color: #fff;
+}
+.token {
+    font-family: monospace;
+    background: #e3f2fd;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.98em;
+}
+
+/* Admin Table Styles (for admin-dashboard) */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+}
+.admin-table th, .admin-table td {
+    border: 1px solid #e0e7ef;
+    padding: 10px 8px;
+    text-align: left;
+}
+.admin-table th {
+    background: #f4f6fb;
+}
+.admin-table tr:nth-child(even) {
+    background: #f9fafb;
+}
+.admin-actions button {
+    margin-right: 8px;
+}
+.filter-bar {
+    margin: 24px 0 12px 0;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+/* Admin Dashboard Action Buttons */
+.admin-actions button,
+.btn-approve, .btn-reject, .btn-delete, .btn-view, .btn-resolve {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    font-size: 0.98rem;
+    font-weight: 500;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    margin-right: 8px;
+    transition: background 0.2s, color 0.2s;
+    outline: none;
+}
+.btn-approve, .admin-actions button.approve {
+    background: #43a047;
+    color: #fff;
+}
+.btn-approve:hover, .admin-actions button.approve:hover {
+    background: #388e3c;
+}
+.btn-reject, .btn-delete, .admin-actions button.reject, .admin-actions button.delete {
+    background: #e53935;
+    color: #fff;
+}
+.btn-reject:hover, .btn-delete:hover, .admin-actions button.reject:hover, .admin-actions button.delete:hover {
+    background: #b71c1c;
+}
+.btn-view, .btn-resolve, .admin-actions button.view, .admin-actions button.resolve {
+    background: #4f8cff;
+    color: #fff;
+}
+.btn-view:hover, .btn-resolve:hover, .admin-actions button.view:hover, .admin-actions button.resolve:hover {
+    background: #2563eb;
+}
+.admin-actions button:last-child {
+    margin-right: 0;
+}
+
+/* Table button icon spacing */
+.admin-actions button i {
+    margin-right: 6px;
+    font-size: 1em;
+}
+
+/* Modal Button Styles (for admin welcome modal and others) */
+.modal-content button, .admin-welcome-content button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px 0;
+    font-size: 1.08rem;
+    font-weight: 600;
+    border-radius: 6px;
+    border: 1.5px solid #4f8cff;
+    background: #fff;
+    color: #4f8cff;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.modal-content button:hover, .admin-welcome-content button:hover {
+    background: #4f8cff;
+    color: #fff;
+}
+
+/* Ensure all form-container input fields are styled, including password */
+.form-container input[type="text"],
+.form-container input[type="email"],
+.form-container input[type="password"] {
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #f9fafb;
+    transition: border 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+}
+.form-container input[type="text"]:focus,
+.form-container input[type="email"]:focus,
+.form-container input[type="password"]:focus {
+    border: 1.5px solid #4f8cff;
+    outline: none;
+    background: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .dashboard-container {
+        flex-direction: column;
+        min-width: 0;
+    }
+    .dashboard-sidebar {
+        min-width: 100%;
+        border-radius: 14px 14px 0 0;
+        box-shadow: none;
+        padding: 0;
+    }
+    .dashboard-main {
+        padding: 24px 8vw;
+    }
+}
+@media (max-width: 600px) {
+    .dashboard-main {
+        padding: 16px 2vw;
+    }
+    .dashboard-sidebar li {
+        padding: 12px 10px;
+        font-size: 1rem;
+    }
+    form, #tokenSection {
+        max-width: 98vw;
+        padding: 18px 6vw;
+    }
+    h1 {
+        font-size: 1.4rem;
+    }
+    .logout-btn {
+        top: 10px;
+        right: 10px;
+        padding: 6px 10px;
+        font-size: 0.95rem;
+    }
+} 
