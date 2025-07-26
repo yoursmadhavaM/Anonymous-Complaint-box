@@ -16,6 +16,37 @@
             <input type="text" id="registerName" name="registerName" required placeholder="Enter your name" autocomplete="name">
             <label for="registerEmail">Email:</label>
             <input type="email" id="registerEmail" name="registerEmail" required placeholder="Enter your email" autocomplete="email">
+            <label for="userType">User Type:</label>
+            <select id="userType" name="userType" required>
+                <option value="">Select User Type</option>
+                <option value="student">Student</option>
+                <option value="faculty">Faculty</option>
+                <option value="parent">Parent</option>
+                <option value="other">Other</option>
+            </select>
+            <div id="studentRegdDiv" style="display:none;">
+                <label for="studentRegd">Student Registration Number:</label>
+                <input type="text" id="studentRegd" name="studentRegd" placeholder="e.g., L24CD207" pattern="[LY]\d{2}[A-Z]{2}\d{3}" title="Format: L/Y + 2 digits + 2 letters + 3 digits (e.g., L24CD207)">
+                <small style="color:#666;font-size:0.9em;">Format: L/Y + Year + Branch + Number (e.g., L24CD207, Y23CD047)</small>
+            </div>
+            <div id="facultyIdDiv" style="display:none;">
+                <label for="facultyId">Faculty ID:</label>
+                <input type="text" id="facultyId" name="facultyId" maxlength="6" pattern="\d{6}" placeholder="6 digit Faculty ID">
+                <small style="color:#666;font-size:0.9em;">6 digit numeric Faculty ID</small>
+            </div>
+            <div id="parentDiv" style="display:none;">
+                <label for="parentContact">Contact Number:</label>
+                <input type="text" id="parentContact" name="parentContact" maxlength="10" pattern="\d{10}" placeholder="10 digit contact number">
+                <label for="childName">Child Name:</label>
+                <input type="text" id="childName" name="childName" placeholder="Enter your child's name">
+                <label for="childRegd">Child Registration Number:</label>
+                <input type="text" id="childRegd" name="childRegd" placeholder="e.g., L24CD207" pattern="[LY]\d{2}[A-Z]{2}\d{3}" title="Format: L/Y + 2 digits + 2 letters + 3 digits (e.g., L24CD207)">
+                <small style="color:#666;font-size:0.9em;">Format: L/Y + Year + Branch + Number (e.g., L24CD207, Y23CD047)</small>
+            </div>
+            <div id="otherDiv" style="display:none;">
+                <label for="otherSpecify">Please specify:</label>
+                <input type="text" id="otherSpecify" name="otherSpecify" placeholder="e.g., Alumni, Guest, etc.">
+            </div>
             <label for="registerPassword">Password:</label>
             <input type="password" id="registerPassword" name="registerPassword" required placeholder="Enter your password" autocomplete="off">
             <div class="terms-container">

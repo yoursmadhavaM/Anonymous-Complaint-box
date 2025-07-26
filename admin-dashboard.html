@@ -51,6 +51,8 @@
         </label>
         <button id="refreshBtn"><i class="fa-solid fa-rotate"></i> Refresh</button>
       </div>
+      <!-- Move announcement bar here -->
+      <div id="announcementBar" class="announcement-bar" style="display:none;"></div>
       <section id="complaintsSection" class="dashboard-section" style="display:block;">
         <h2>Complaints Submitted</h2>
         <table class="admin-table">
@@ -114,8 +116,21 @@
       <div id="detailsContent"></div>
     </div>
   </div>
-  <!-- Announcement Bar (populated by script.js) -->
-  <div id="announcementBar" class="announcement-bar" style="display:none;"></div>
+  <!-- Modal for resolution description -->
+  <div id="resolutionModal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <h2>Resolve Complaint</h2>
+      <form id="resolutionForm">
+        <label for="resolutionDescription">Resolution Description (required):</label>
+        <textarea id="resolutionDescription" name="resolutionDescription" rows="3" required placeholder="Enter resolution details..."></textarea>
+        <div style="margin-top:12px;">
+          <button type="submit" style="background:#388e3c;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-weight:600;">Resolve</button>
+          <button type="button" id="cancelResolutionBtn" style="background:#e53935;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-weight:600;margin-left:10px;">Cancel</button>
+        </div>
+      </form>
+      <div id="resolutionError" style="color:#e53935;margin-top:10px;"></div>
+    </div>
+  </div>
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>

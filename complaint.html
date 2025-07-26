@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Submission</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="logo-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- College Banner -->
+    <div class="college-banner">
+        <h1><i class="fa-solid fa-graduation-cap"></i> College Complaint Portal</h1>
+    </div>
+
+    <!-- Complaint Form -->
+    <div class="form-container">
+        <h1><i class="fa-solid fa-file-lines"></i> Submit a Complaint</h1>
+        <p style="text-align: center; color: #666; margin-bottom: 20px;">
+            Submit your complaint with your contact details for follow-up communication.
+        </p>
+        
+        <form id="complaintForm">
+            <div class="form-group">
+                <label for="complaintName">Full Name:</label>
+                <input type="text" id="complaintName" name="complaintName" required placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label for="complaintEmail">Email:</label>
+                <input type="email" id="complaintEmail" name="complaintEmail" required placeholder="Enter your email address">
+            </div>
+            <div class="form-group">
+                <label for="complaintType">Complaint Type:</label>
+                <select id="complaintType" name="complaintType" required>
+                    <option value="">Select Complaint Type</option>
+                    <option value="academic">Academic</option>
+                    <option value="infrastructure">Infrastructure</option>
+                    <option value="faculty">Faculty</option>
+                    <option value="hostel">Hostel</option>
+                    <option value="transportation">Transportation</option>
+                    <option value="canteen">Canteen</option>
+                    <option value="library">Library</option>
+                    <option value="sports">Sports</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="complaintDescription">Description:</label>
+                <textarea id="complaintDescription" name="complaintDescription" rows="4" required placeholder="Describe your complaint"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="requiredResolution">What resolution do you require?</label>
+                <textarea id="requiredResolution" name="requiredResolution" rows="3" required placeholder="Specify expected action"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="button" onclick="window.location.href='index.html'" class="btn-secondary">Back to Home</button>
+                <button type="submit" class="btn-primary">Submit Complaint</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Token Display Section -->
+    <div id="tokenSection" style="display:none;" class="form-container">
+        <h2><i class="fa-solid fa-check-circle"></i> Complaint Submitted Successfully!</h2>
+        <p>Your complaint has been submitted. Please save this token for status tracking:</p>
+        <div id="tokenDisplay" style="font-size: 1.5rem; font-weight: bold; color: #4f8cff; text-align: center; padding: 20px; background: #f8f9fa; border-radius: 8px; margin: 20px 0;"></div>
+        <div style="text-align: center;">
+            <button onclick="window.location.href='status.html'" class="btn-primary">Check Status</button>
+            <button onclick="window.location.href='index.html'" class="btn-secondary">Back to Home</button>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Generate unique token function
+        function generateToken() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let token = '';
+            for (let i = 0; i < 8; i++) {
+                token += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return token;
+        }
+
+        // Complaint form submission
+        const complaintForm = document.getElementById('complaintForm');
+        const tokenSection = document.getElementById('tokenSection');
+
+        if (complaintForm) {
+            complaintForm.onsubmit = async function(e) {
+                e.preventDefault();
+                
+                const complaintName = document.getElementById('complaintName').value.trim();
+                const complaintEmail = document.getElementById('complaintEmail').value.trim();
+                const complaintType = document.getElementById('complaintType').value;
+                const complaintDescription = document.getElementById('complaintDescription').value;
+                const requiredResolution = document.getElementById('requiredResolution').value;
+                
+                // Check all required fields including name and email
+                if (!complaintName || !complaintEmail || !complaintType || !complaintDescription || !requiredResolution) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+
+                try {
+                    // Generate unique token
+                    const token = generateToken();
+                    
+                    // Save to Firestore with all fields
+                    await db.collection('complaints').add({
+                        token: token,
+                        name: complaintName,
+                        email: complaintEmail,
+                        type: complaintType,
+                        description: complaintDescription,
+                        requiredResolution: requiredResolution,
+                        status: 'pending',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        isAnonymous: false
+                    });
+
+                    // Show success message with token
+                    complaintForm.style.display = 'none';
+                    
+                    const tokenDisplay = document.getElementById('tokenDisplay');
+                    if (tokenDisplay) {
+                        tokenDisplay.textContent = token;
+                    }
+                    tokenSection.style.display = 'block';
+                    
+                    // Reset form
+                    complaintForm.reset();
+                    
+                } catch (err) {
+                    console.error('Error submitting complaint:', err);
+                    alert('Failed to submit complaint. Please try again.');
+                }
+            };
+        }
+    </script>
+</body>
+</html> 

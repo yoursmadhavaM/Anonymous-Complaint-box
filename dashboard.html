@@ -8,53 +8,332 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
+    <!-- Fixed College Banner -->
     <img src="http://rvrjc.ac.in/ximages/2.2%20Header%20(1).png" alt="College Banner" class="college-banner">
-    <button id="logoutBtn" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
-    <div id="announcementBar" class="announcement-bar" style="display:none;"></div>
-    <div class="dashboard-container">
-        <nav class="dashboard-sidebar">
-            <ul>
-                <li class="active" data-section="complaints"><i class="fa-solid fa-list"></i> Complaints Submitted</li>
-                <li data-section="resolved"><i class="fa-solid fa-check-circle"></i> Complaints Resolved</li>
-                <li data-section="tokens"><i class="fa-solid fa-key"></i> All Tokens</li>
-                <li data-section="credits"><i class="fa-solid fa-star"></i> Credit Points</li>
-                <li class="sidebar-divider"></li>
-                <li class="sidebar-heading">Announcements</li>
-                <li data-section="announcementRequests"><i class="fa-solid fa-inbox"></i> Announcement Requests</li>
-                <li data-section="announcements"><i class="fa-solid fa-bullhorn"></i> Announcements</li>
-            </ul>
+    
+    <!-- Modern User Dashboard -->
+    <div class="modern-dashboard">
+        <!-- Top Navigation Bar -->
+        <nav class="top-nav">
+            <div class="nav-left">
+                <h1 class="portal-title"><i class="fa-solid fa-graduation-cap"></i> User Dashboard</h1>
+            </div>
+            <div class="nav-right">
+                <div class="user-profile">
+                    <div class="user-info">
+                        <span id="userGreeting">Welcome!</span>
+                        <small id="userType">Student</small>
+                    </div>
+                    <div class="user-avatar" id="userAvatarBtn">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <!-- User Dropdown Menu -->
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="dropdown-item" id="profileSettingsBtn">
+                            <i class="fa-solid fa-user-cog"></i> Profile Settings
+                        </div>
+                        <div class="dropdown-item" id="changePasswordBtn">
+                            <i class="fa-solid fa-key"></i> Change Password
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item" id="logoutDropdownBtn">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </div>
+                    </div>
+                </div>
+                <button id="logoutBtn" class="logout-btn-modern">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
         </nav>
-        <main class="dashboard-main">
-            <section id="complaintsSection" class="dashboard-section" style="display:block;">
-                <h2>Complaints Submitted</h2>
-                <div id="complaintsList">Loading complaints...</div>
-            </section>
-            <section id="resolvedSection" class="dashboard-section" style="display:none;">
-                <h2>Complaints Resolved</h2>
-                <div id="resolvedCount">Loading resolved complaints...</div>
-            </section>
-            <section id="tokensSection" class="dashboard-section" style="display:none;">
-                <h2>All Tokens</h2>
-                <div id="adminTokensList">Loading tokens...</div>
-            </section>
-            <section id="creditsSection" class="dashboard-section" style="display:none;">
-                <h2>Credit Points</h2>
-                <div id="adminCreditsList">Loading credits...</div>
-            </section>
-            <section id="announcementRequestsSection" class="dashboard-section" style="display:none;">
-                <h2>Announcement Requests</h2>
-                <div id="adminAnnouncementRequestsList">Loading requests...</div>
-            </section>
-            <section id="announcementsSection" class="dashboard-section" style="display:none;">
-                <h2>Announcements</h2>
-                <form id="adminAnnouncementForm" style="margin-bottom:18px;">
-                    <input type="text" id="adminAnnouncementText" placeholder="Add new announcement..." style="width:70%;padding:8px;">
-                    <button type="submit" style="background:#ff1744;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-weight:600;">Add</button>
-                </form>
-                <div id="adminAnnouncementsList">Loading announcements...</div>
-            </section>
-        </main>
+
+        <!-- Main Content Area -->
+        <div class="dashboard-content">
+            <!-- Quick Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon pending">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="pendingCount">0</h3>
+                        <p>Pending Complaints</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon resolved">
+                        <i class="fa-solid fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="resolvedCount">0</h3>
+                        <p>Resolved Complaints</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon total">
+                        <i class="fa-solid fa-list"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalCount">0</h3>
+                        <p>Total Complaints</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon tokens">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="tokenCount">0</h3>
+                        <p>Active Tokens</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button id="newComplaintBtn" class="action-btn primary">
+                    <i class="fa-solid fa-plus"></i> Submit New Complaint
+                </button>
+                <button id="checkStatusBtn" class="action-btn secondary">
+                    <i class="fa-solid fa-search"></i> Check Status
+                </button>
+                <button id="requestAnnouncementBtn" class="action-btn secondary">
+                    <i class="fa-solid fa-bullhorn"></i> Request Announcement
+                </button>
+            </div>
+
+            <!-- Main Content Sections -->
+            <div class="content-sections">
+                <!-- Recent Complaints Section -->
+                <section id="recentComplaintsSection" class="content-section active">
+                    <div class="section-header">
+                        <h2><i class="fa-solid fa-history"></i> Recent Complaints</h2>
+                        <div class="section-actions">
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="pending">Pending</button>
+                            <button class="filter-btn" data-filter="resolved">Resolved</button>
+                        </div>
+                    </div>
+                    <div id="complaintsList" class="complaints-grid">
+                        <div class="loading-spinner">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                            <p>Loading your complaints...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Announcements Section -->
+                <section id="announcementsSection" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fa-solid fa-bullhorn"></i> College Announcements</h2>
+                    </div>
+                    <div id="announcementsList" class="announcements-list">
+                        <div class="loading-spinner">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                            <p>Loading announcements...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Profile Section -->
+                <section id="profileSection" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fa-solid fa-user"></i> My Profile</h2>
+                    </div>
+                    <div id="profileInfo" class="profile-card">
+                        <div class="loading-spinner">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                            <p>Loading profile...</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
     </div>
+    <!-- Announcement Bar (moved below dashboard) -->
+    <div id="announcementBar" class="announcement-bar" style="display:none;"></div>
+
+    <!-- New Complaint Modal -->
+    <div id="newComplaintModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content modern-modal">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-plus"></i> Submit New Complaint</h2>
+                <button id="closeNewComplaintModal" class="close-btn">&times;</button>
+            </div>
+            <form id="newComplaintForm">
+                <div class="form-group">
+                    <label for="complaintType">Complaint Type:</label>
+                    <select id="complaintType" required>
+                        <option value="">Select type</option>
+                        <option value="Hostel">Hostel</option>
+                        <option value="Academics">Academics</option>
+                        <option value="Facilities">Facilities</option>
+                        <option value="Ragging">Ragging</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="complaintDescription">Description:</label>
+                    <textarea id="complaintDescription" rows="4" required placeholder="Describe your complaint in detail..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="complaintRequirement">What do you require?</label>
+                    <select id="complaintRequirement" required>
+                        <option value="">Select requirement</option>
+                        <option value="Repair">Repair</option>
+                        <option value="Counseling">Counseling</option>
+                        <option value="Investigation">Investigation</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group" id="otherRequirementGroup" style="display:none;">
+                    <label for="otherRequirement">Specify Requirement:</label>
+                    <input type="text" id="otherRequirement" placeholder="Please specify your requirement">
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancelComplaintBtn" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Submit Complaint</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Status Check Modal -->
+    <div id="statusCheckModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content modern-modal">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-search"></i> Check Complaint Status</h2>
+                <button id="closeStatusCheckModal" class="close-btn">&times;</button>
+            </div>
+            <form id="statusCheckForm">
+                <div class="form-group">
+                    <label for="statusToken">Enter Complaint Token:</label>
+                    <input type="text" id="statusToken" required placeholder="e.g., C-ABC123XYZ">
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancelStatusBtn" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Check Status</button>
+                </div>
+            </form>
+            <div id="statusResult" class="status-result"></div>
+        </div>
+    </div>
+
+    <!-- Announcement Request Modal -->
+    <div id="announcementRequestModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content modern-modal">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-bullhorn"></i> Request Announcement</h2>
+                <button id="closeAnnouncementRequestModal" class="close-btn">&times;</button>
+            </div>
+            <form id="announcementRequestForm">
+                <div class="form-group">
+                    <label for="announcementText">Announcement Request:</label>
+                    <textarea id="announcementText" name="announcementText" rows="4" required placeholder="Enter your announcement request..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancelAnnouncementBtn" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Submit Request</button>
+                </div>
+            </form>
+            <div id="announcementRequestResult" class="result-message"></div>
+        </div>
+    </div>
+
+    <!-- Profile Settings Modal -->
+    <div id="profileSettingsModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content modern-modal">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-user-cog"></i> Profile Settings</h2>
+                <button id="closeProfileSettingsModal" class="close-btn">&times;</button>
+            </div>
+            <form id="profileSettingsForm">
+                <div class="form-group">
+                    <label for="profileName">Full Name:</label>
+                    <input type="text" id="profileName" name="profileName" required>
+                </div>
+                <div class="form-group">
+                    <label for="profileEmail">Email:</label>
+                    <input type="email" id="profileEmail" name="profileEmail" readonly>
+                    <small style="color:#666;">Email cannot be changed</small>
+                </div>
+                <div class="form-group">
+                    <label for="profileUserType">User Type:</label>
+                    <input type="text" id="profileUserType" name="profileUserType" readonly>
+                    <small style="color:#666;">User type cannot be changed</small>
+                </div>
+                <div id="profileStudentFields" style="display:none;">
+                    <div class="form-group">
+                        <label for="profileStudentRegd">Student Registration Number:</label>
+                        <input type="text" id="profileStudentRegd" name="profileStudentRegd" readonly>
+                        <small style="color:#666;">Registration number cannot be changed</small>
+                    </div>
+                </div>
+                <div id="profileFacultyFields" style="display:none;">
+                    <div class="form-group">
+                        <label for="profileFacultyId">Faculty ID:</label>
+                        <input type="text" id="profileFacultyId" name="profileFacultyId" readonly>
+                        <small style="color:#666;">Faculty ID cannot be changed</small>
+                    </div>
+                </div>
+                <div id="profileParentFields" style="display:none;">
+                    <div class="form-group">
+                        <label for="profileParentContact">Contact Number:</label>
+                        <input type="text" id="profileParentContact" name="profileParentContact" maxlength="10" pattern="\d{10}">
+                    </div>
+                    <div class="form-group">
+                        <label for="profileChildName">Child Name:</label>
+                        <input type="text" id="profileChildName" name="profileChildName">
+                    </div>
+                    <div class="form-group">
+                        <label for="profileChildRegd">Child Registration Number:</label>
+                        <input type="text" id="profileChildRegd" name="profileChildRegd" pattern="[LY]\d{2}[A-Z]{2}\d{3}">
+                    </div>
+                </div>
+                <div id="profileOtherFields" style="display:none;">
+                    <div class="form-group">
+                        <label for="profileOtherSpecify">User Category:</label>
+                        <input type="text" id="profileOtherSpecify" name="profileOtherSpecify">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancelProfileBtn" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+            <div id="profileSettingsResult" class="result-message"></div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content modern-modal">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-key"></i> Change Password</h2>
+                <button id="closeChangePasswordModal" class="close-btn">&times;</button>
+            </div>
+            <form id="changePasswordForm">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password:</label>
+                    <input type="password" id="currentPassword" name="currentPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password:</label>
+                    <input type="password" id="newPassword" name="newPassword" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password:</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required minlength="6">
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancelPasswordBtn" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Change Password</button>
+                </div>
+            </form>
+            <div id="changePasswordResult" class="result-message"></div>
+        </div>
+    </div>
+
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>

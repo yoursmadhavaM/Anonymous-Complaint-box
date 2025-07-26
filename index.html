@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>College Complaint Submission</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="logo-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Fixed College Banner -->
@@ -14,12 +15,29 @@
     <!-- Welcome Modal -->
     <div id="authModal" class="modal-overlay">
         <div class="modal-content">
-            <i class="fa-solid fa-user-graduate welcome-icon"></i>
-            <h2>Welcome!</h2>
-            <p>Please choose how you want to proceed:</p>
-            <button id="modalLoginBtn"><i class="fa-solid fa-right-to-bracket"></i> Login / Register</button>
-            <button id="modalAnonBtn"><i class="fa-solid fa-user-secret"></i> Submit Anonymously</button>
-            <button id="openStatusModalBtn" class="status-btn-green" type="button"><i class="fa-solid fa-magnifying-glass"></i> Check Complaint Status</button>
+            <div class="modal-header">
+                <div class="logo-container">
+                    <img src="https://tse1.mm.bing.net/th/id/OIP.svgJN6Q98-NSxlNaNKnmNAAAAA?pid=Api&P=0&h=180" alt="College Logo" class="college-logo">
+                </div>
+                <h2><i class="fa-solid fa-graduation-cap"></i> Welcome to Anonymous Complaint Box</h2>
+            </div>
+            <div class="modal-body">
+                <div class="welcome-icon">
+                    <i class="fa-solid fa-comments"></i>
+                </div>
+                <p class="welcome-text">How would you like to submit your complaint?</p>
+                <div class="auth-options">
+                    <button id="loginBtn" class="auth-btn primary">
+                        <i class="fa-solid fa-sign-in-alt"></i> Login / Register
+                    </button>
+                    <button id="anonymousBtn" class="auth-btn secondary">
+                        <i class="fa-solid fa-user-secret"></i> Submit Anonymously
+                    </button>
+                    <button id="submitComplaintBtn" class="auth-btn tertiary">
+                        <i class="fa-solid fa-file-lines"></i> Submit a Complaint
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -39,7 +57,20 @@
 
     <!-- Announcement Bar (populated by script.js) -->
     <div id="announcementBar" class="announcement-bar" style="display:none;"></div>
-    <button id="requestAnnouncementBtn" class="request-announcement-btn">Request Announcement</button>
+    <button id="requestAnnouncementBtn" class="request-announcement-btn" style="display:none;">Request Announcement</button>
+
+    <!-- Login Required Modal for Announcement Request -->
+    <div id="loginRequiredModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <button id="closeLoginRequiredModalBtn" style="float:right; background:none; border:none; font-size:1.5rem; color:#e53935; cursor:pointer;" aria-label="Close">&times;</button>
+            <h2>Login Required</h2>
+            <p>You need to be logged in to request announcements.</p>
+            <div style="margin-top:20px;">
+                <button id="goToLoginBtn" style="background:#4f8cff;color:#fff;border:none;border-radius:6px;padding:10px 20px;font-weight:600;margin-right:10px;">Login</button>
+                <button id="cancelLoginRequiredBtn" style="background:#6c757d;color:#fff;border:none;border-radius:6px;padding:10px 20px;font-weight:600;">Cancel</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Announcement Request Modal -->
     <div id="announcementModal" class="modal-overlay" style="display:none;">
@@ -58,35 +89,41 @@
     <!-- Complaint Form (hidden until user chooses) -->
     <h1 id="complaintTitle" style="display:none;">Submit a Complaint</h1>
     <form id="complaintForm" style="display:none;">
-        <label for="name">Name (optional):</label>
-        <input type="text" id="name" name="name" placeholder="Enter your name" autocomplete="name">
-        <label for="email">Email (optional):</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email">
-        <label for="complaintType">Complaint Type:</label>
-        <select id="complaintType" name="complaintType" required autocomplete="off">
-            <option value="">Select type</option>
-            <option value="Hostel">Hostel</option>
-            <option value="Academics">Academics</option>
-            <option value="Facilities">Facilities</option>
-            <option value="Ragging">Ragging</option>
-            <option value="Others">Others</option>
-        </select>
-        <label for="description">Complaint Description:</label>
-        <textarea id="description" name="description" rows="4" required placeholder="Describe your complaint..." autocomplete="off"></textarea>
-        <label for="requirement">What do you require?</label>
-        <select id="requirement" name="requirement" required autocomplete="off">
-            <option value="">Select requirement</option>
-            <option value="Repair">Repair</option>
-            <option value="Counseling">Counseling</option>
-            <option value="Investigation">Investigation</option>
-            <option value="Other">Other (please specify below)</option>
-        </select>
-        <input type="text" id="otherRequirement" name="otherRequirement" placeholder="If other, specify here" style="display:none;" autocomplete="off">
-        <div>
-            <input type="checkbox" id="anonymous" name="anonymous">
-            <label for="anonymous">Submit anonymously</label>
+        <div class="form-group" id="nameEmailFields">
+            <label for="complaintName">Full Name:</label>
+            <input type="text" id="complaintName" name="complaintName" required placeholder="Enter your full name">
         </div>
-        <button type="submit">Submit Complaint</button>
+        <div class="form-group" id="emailFields">
+            <label for="complaintEmail">Email:</label>
+            <input type="email" id="complaintEmail" name="complaintEmail" required placeholder="Enter your email address">
+        </div>
+        <div class="form-group">
+            <label for="complaintType">Complaint Type:</label>
+            <select id="complaintType" name="complaintType" required>
+                <option value="">Select Complaint Type</option>
+                <option value="academic">Academic</option>
+                <option value="infrastructure">Infrastructure</option>
+                <option value="faculty">Faculty</option>
+                <option value="hostel">Hostel</option>
+                <option value="transportation">Transportation</option>
+                <option value="canteen">Canteen</option>
+                <option value="library">Library</option>
+                <option value="sports">Sports</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="complaintDescription">Description:</label>
+            <textarea id="complaintDescription" name="complaintDescription" rows="4" required placeholder="Describe your complaint"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="requiredResolution">What resolution do you require?</label>
+            <textarea id="requiredResolution" name="requiredResolution" rows="3" required placeholder="Specify expected action"></textarea>
+        </div>
+        <div class="form-actions">
+            <button type="button" id="cancelComplaintBtn" class="btn-secondary">Cancel</button>
+            <button type="submit" class="btn-primary">Submit Complaint</button>
+        </div>
     </form>
 
     <!-- Token Display Section -->
