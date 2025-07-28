@@ -8,7 +8,7 @@ body {
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    padding-top: 110px;
+    padding-top: 160px; /* Increased to account for fixed announcement bar */
     /* Subtle SVG pattern overlay */
     position: relative;
 }
@@ -145,7 +145,7 @@ input[type="checkbox"] {
 }
 /* Announcement Bar */
 .announcement-bar {
-    background: rgba(255, 255, 255, 0.8); /* White background with transparency */
+    background: rgba(255, 255, 255, 0.95); /* More opaque background */
     color: #2e7d32; /* Green text */
     padding: 12px 20px;
     text-align: center;
@@ -153,10 +153,13 @@ input[type="checkbox"] {
     font-size: 1.1rem;
     border-bottom: 2px solid #4caf50;
     box-shadow: 0 2px 8px rgba(46, 125, 50, 0.15);
-    margin: 20px 0;
-    border-radius: 8px;
-    position: relative;
+    position: fixed; /* Fixed position to stay at top while scrolling */
+    top: 100px; /* Position below the college banner */
+    left: 0;
+    width: 100%;
     z-index: 1000;
+    margin: 0;
+    border-radius: 0;
 }
 
 .announcement-bar .alert-icon {
@@ -195,14 +198,16 @@ input[type="checkbox"] {
 .announcement-bar.announcement-ticker {
     overflow: hidden;
     white-space: nowrap;
-    position: relative; /* Changed from fixed to relative */
+    position: fixed; /* Fixed position to stay at top while scrolling */
+    top: 100px; /* Position below the college banner */
+    left: 0;
     width: 100%;
     z-index: 1000;
-    background: rgba(255, 255, 255, 0.8); /* White background with transparency */
+    background: rgba(255, 255, 255, 0.95); /* More opaque background */
     color: #2e7d32; /* Green text */
     font-weight: bold;
     font-size: 1.08rem;
-    padding: 12px 0;
+    padding: 12px 20px;
     text-align: left;
     box-shadow: 0 2px 8px rgba(46, 125, 50, 0.15);
     letter-spacing: 0.5px;
@@ -210,8 +215,8 @@ input[type="checkbox"] {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin: 20px 0;
-    border-radius: 8px;
+    margin: 0;
+    border-radius: 0;
 }
 .announcement-bar.announcement-ticker span.ticker-content {
     display: inline-block;
