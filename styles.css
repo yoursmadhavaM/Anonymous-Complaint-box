@@ -164,16 +164,16 @@ input[type="checkbox"] {
 
 /* Dashboard specific announcement bar positioning */
 .modern-dashboard .announcement-bar {
-    position: fixed;
-    top: 170px; /* Position below the top navigation bar (100px + 70px height) */
-    left: 0;
+    position: relative;
+    margin: 0;
     width: 100%;
     z-index: 1000;
+    margin-bottom: 20px;
 }
 
-/* Dashboard content spacing for fixed announcement bar */
+/* Dashboard content spacing for relative announcement bar */
 .modern-dashboard .dashboard-content {
-    margin-top: 220px; /* Increased to account for fixed announcement bar (170px + 50px spacing) */
+    margin-top: 24px; /* Normal spacing since announcement bar is now relative */
 }
 
 .announcement-bar .alert-icon {
