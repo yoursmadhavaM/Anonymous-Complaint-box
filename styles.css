@@ -162,6 +162,20 @@ input[type="checkbox"] {
     border-radius: 0;
 }
 
+/* Dashboard specific announcement bar positioning */
+.modern-dashboard .announcement-bar {
+    position: fixed;
+    top: 100px; /* Position below the college banner */
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* Dashboard content spacing for fixed announcement bar */
+.modern-dashboard .dashboard-content {
+    margin-top: 120px; /* Increased to account for fixed announcement bar */
+}
+
 .announcement-bar .alert-icon {
     font-size: 1.3em;
     margin-right: 8px;
