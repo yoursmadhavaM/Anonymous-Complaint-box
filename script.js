@@ -13,6 +13,30 @@ if (!firebase.apps.length) {
 }
 const db = firebase.firestore();
 const auth = firebase.auth();
+const storage = firebase.storage();
+
+// Test Firebase configuration
+function testFirebaseConfig() {
+  console.log('Testing Firebase configuration...');
+  console.log('Firebase config:', firebaseConfig);
+  console.log('Firebase app initialized:', firebase.apps.length > 0);
+  console.log('Firestore available:', !!db);
+  console.log('Auth available:', !!auth);
+  console.log('Storage available:', !!storage);
+  
+  // Test if we can access Firebase services
+  try {
+    const testRef = db.collection('test');
+    console.log('Firestore connection test:', testRef);
+  } catch (error) {
+    console.error('Firestore connection error:', error);
+  }
+}
+
+// Run test on page load
+document.addEventListener('DOMContentLoaded', function() {
+  testFirebaseConfig();
+});
 
 // --- Global Functions (defined early to avoid scope issues) ---
 let resolveComplaintId = null;
@@ -54,8 +78,9 @@ function setupAnnouncementBar() {
     console.log('[DEBUG] announcementBar div not found');
     return;
   }
-  // If on index.html, use ticker style
+  // If on index.html or dashboard, use ticker style
   const isIndex = getPage() === 'index';
+  const isDashboard = getPage() === 'dashboard';
   db.collection('announcements')
     .where('status', '==', 'approved')
     .orderBy('createdAt', 'desc')
@@ -66,7 +91,7 @@ function setupAnnouncementBar() {
       if (!snapshot.empty) {
         const data = snapshot.docs[0].data();
         console.log('[DEBUG] Announcement data:', data);
-        if (isIndex) {
+        if (isIndex || isDashboard) {
           announcementBar.classList.add('announcement-ticker');
           announcementBar.innerHTML = `<span class="alert-icon"><i class="fa-solid fa-triangle-exclamation"></i></span><span class='ticker-content'>${data.text}</span>`;
         } else {
@@ -389,17 +414,65 @@ function setupLoginPage() {
   const loginForm = document.getElementById('loginForm');
   const loginError = document.getElementById('loginError');
   const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
+  
   if (loginForm) {
     loginForm.onsubmit = async function(e) {
       e.preventDefault();
       const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value;
+      
+      console.log('Login attempt for email:', email);
+      console.log('Password length:', password.length);
+      
       if (loginError) loginError.textContent = '';
+      
+      // Basic validation
+      if (!email || !password) {
+        if (loginError) loginError.textContent = 'Please enter both email and password.';
+        return;
+      }
+      
+      if (!email.includes('@')) {
+        if (loginError) loginError.textContent = 'Please enter a valid email address.';
+        return;
+      }
+      
       try {
-        await auth.signInWithEmailAndPassword(email, password);
+        console.log('Attempting Firebase authentication...');
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        console.log('Login successful:', userCredential.user.email);
         window.location.href = 'dashboard.html';
       } catch (err) {
-        if (loginError) loginError.textContent = 'Login failed: ' + err.message;
+        console.error('Login error:', err);
+        console.error('Error code:', err.code);
+        console.error('Error message:', err.message);
+        
+        let errorMessage = 'Login failed: ';
+        
+        switch (err.code) {
+          case 'auth/user-not-found':
+            errorMessage += 'No account found with this email address.';
+            break;
+          case 'auth/wrong-password':
+            errorMessage += 'Incorrect password.';
+            break;
+          case 'auth/invalid-email':
+            errorMessage += 'Invalid email address.';
+            break;
+          case 'auth/user-disabled':
+            errorMessage += 'This account has been disabled.';
+            break;
+          case 'auth/too-many-requests':
+            errorMessage += 'Too many failed attempts. Please try again later.';
+            break;
+          case 'auth/network-request-failed':
+            errorMessage += 'Network error. Please check your internet connection.';
+            break;
+          default:
+            errorMessage += err.message;
+        }
+        
+        if (loginError) loginError.textContent = errorMessage;
       }
     };
   }
@@ -440,6 +513,8 @@ function setupRegisterPage() {
   const childRegdInput = document.getElementById('childRegd');
   const otherDiv = document.getElementById('otherDiv');
   const otherSpecifyInput = document.getElementById('otherSpecify');
+  
+
 
   // Show/hide fields based on user type
   if (userTypeSelect) {
@@ -561,7 +636,14 @@ function setupRegisterPage() {
         }
       }
       try {
+        console.log('Starting user registration...');
+        console.log('Email:', email);
+        console.log('Name:', name);
+        console.log('User Type:', userType);
+        console.log('Password length:', password.length);
+        
         const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        console.log('User created successfully:', userCredential.user.uid);
         const userData = {
           name,
           email,
@@ -582,11 +664,40 @@ function setupRegisterPage() {
         if (userType === 'other') {
           userData.otherSpecify = otherSpecify;
         }
+        
+
+        
         await db.collection('users').doc(userCredential.user.uid).set(userData);
         alert(`Welcome, ${name || email}! Your account has been created successfully.`);
         window.location.href = 'dashboard.html';
       } catch (err) {
-        alert('Registration failed: ' + err.message);
+        console.error('Registration error:', err);
+        console.error('Error code:', err.code);
+        console.error('Error message:', err.message);
+        
+        let errorMessage = 'Registration failed: ';
+        
+        switch (err.code) {
+          case 'auth/email-already-in-use':
+            errorMessage += 'An account with this email already exists.';
+            break;
+          case 'auth/invalid-email':
+            errorMessage += 'Invalid email address.';
+            break;
+          case 'auth/weak-password':
+            errorMessage += 'Password is too weak. Please use at least 6 characters.';
+            break;
+          case 'auth/operation-not-allowed':
+            errorMessage += 'Email/password accounts are not enabled. Please contact support.';
+            break;
+          case 'auth/network-request-failed':
+            errorMessage += 'Network error. Please check your internet connection.';
+            break;
+          default:
+            errorMessage += err.message;
+        }
+        
+        alert(errorMessage);
       }
     };
   }
@@ -653,6 +764,12 @@ function setupUserDashboard() {
         const userTypeElement = document.getElementById('userType');
         if (userGreeting) userGreeting.textContent = `Welcome, ${name}!`;
         if (userTypeElement) userTypeElement.textContent = userType;
+        
+        // Update user avatar (profile pictures removed)
+        const userAvatar = document.getElementById('userAvatarBtn');
+        if (userAvatar) {
+          userAvatar.innerHTML = '<i class="fas fa-user-circle"></i>';
+        }
         
         // Load user data
         loadUserStats(user.uid);

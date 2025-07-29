@@ -164,16 +164,45 @@ input[type="checkbox"] {
 
 /* Dashboard specific announcement bar positioning */
 .modern-dashboard .announcement-bar {
-    position: relative;
-    margin: 0;
+    position: fixed;
+    top: 100px; /* Position between college banner and dashboard navigation */
+    left: 0;
     width: 100%;
     z-index: 1000;
-    margin-bottom: 20px;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.95);
+    color: #2e7d32;
+    padding: 12px 20px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-bottom: 2px solid #4caf50;
+    box-shadow: 0 2px 8px rgba(46, 125, 50, 0.15);
+    overflow: hidden;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-/* Dashboard content spacing for relative announcement bar */
+
+
+/* Dashboard announcement bar ticker animation */
+.modern-dashboard .announcement-bar.announcement-ticker {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+}
+
+.modern-dashboard .announcement-bar.announcement-ticker span.ticker-content {
+    animation: ticker-scroll 20s linear infinite;
+    display: inline-block;
+}
+
+/* Dashboard content spacing for fixed announcement bar */
 .modern-dashboard .dashboard-content {
-    margin-top: 24px; /* Normal spacing since announcement bar is now relative */
+    margin-top: 190px; /* Account for college banner (100px) + announcement bar (50px) + dashboard nav (40px) */
 }
 
 .announcement-bar .alert-icon {
@@ -212,13 +241,13 @@ input[type="checkbox"] {
 .announcement-bar.announcement-ticker {
     overflow: hidden;
     white-space: nowrap;
-    position: fixed; /* Fixed position to stay at top while scrolling */
-    top: 100px; /* Position below the college banner */
+    position: fixed;
+    top: 100px;
     left: 0;
     width: 100%;
     z-index: 1000;
-    background: rgba(255, 255, 255, 0.95); /* More opaque background */
-    color: #2e7d32; /* Green text */
+    background: rgba(255, 255, 255, 0.95);
+    color: #2e7d32;
     font-weight: bold;
     font-size: 1.08rem;
     padding: 12px 20px;
@@ -234,12 +263,17 @@ input[type="checkbox"] {
 }
 .announcement-bar.announcement-ticker span.ticker-content {
     display: inline-block;
-    padding-left: 100vw;
-    animation: ticker-scroll 18s linear infinite;
+    padding-left: 100%;
+    animation: ticker-scroll 20s linear infinite;
+    white-space: nowrap;
 }
 @keyframes ticker-scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
+    0% { 
+        transform: translateX(100%); 
+    }
+    100% { 
+        transform: translateX(-100%); 
+    }
 }
 .college-banner {
     position: fixed;
@@ -261,7 +295,7 @@ input[type="checkbox"] {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(44, 62, 80, 0.45);
+    /*background: rgba(226, 232, 238, 0.45);*/
     display: flex;
     align-items: center;
     justify-content: center;
@@ -11712,7 +11746,7 @@ input[type="checkbox"] {
 /* Top Navigation */
 .top-nav {
     position: fixed;
-    top: 100px;
+    top: 150px;
     left: 0;
     right: 0;
     background: #fff;
@@ -11961,3 +11995,198 @@ input[type="checkbox"] {
 .action-btn.secondary:hover {
     background: #4f8cff;
 }   
+
+/* Profile Picture Styles */
+.profile-picture-section {
+    margin: 20px 0;
+}
+
+.profile-picture-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin: 10px 0;
+}
+
+.profile-picture-preview {
+    width: 120px;
+    height: 120px;
+    border: 3px dashed #e0e7ef;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.profile-picture-preview:hover {
+    border-color: #2563eb;
+    background: #f1f5f9;
+}
+
+.profile-picture-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.profile-picture-preview i {
+    font-size: 2.5rem;
+    color: #94a3b8;
+    margin-bottom: 5px;
+}
+
+.profile-picture-preview span {
+    font-size: 0.8rem;
+    color: #64748b;
+    text-align: center;
+    padding: 0 10px;
+}
+
+.select-picture-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.select-picture-btn:hover {
+    background: #1d4ed8;
+}
+
+.select-picture-btn i {
+    font-size: 1rem;
+}
+
+/* Login Profile Display Styles */
+.login-profile-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e0e7ef;
+}
+
+.login-profile-picture {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #e0e7ef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.login-profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.login-profile-picture i {
+    font-size: 1.8rem;
+    color: #94a3b8;
+}
+
+.login-user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.login-user-info span {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 1rem;
+}
+
+.login-user-info small {
+    color: #64748b;
+    font-size: 0.85rem;
+    text-transform: capitalize;
+}
+
+/* Profile Picture Display in Profile Section */
+.profile-picture-field {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.profile-picture-display {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #e0e7ef;
+}
+
+.profile-picture-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-picture-placeholder {
+    font-size: 2.5rem;
+    color: #94a3b8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .profile-picture-preview {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .profile-picture-preview i {
+        font-size: 2rem;
+    }
+    
+    .login-profile-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .login-profile-picture {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .login-profile-picture i {
+        font-size: 1.5rem;
+    }
+    
+    .profile-picture-display {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .profile-picture-placeholder {
+        font-size: 2rem;
+    }
+}
