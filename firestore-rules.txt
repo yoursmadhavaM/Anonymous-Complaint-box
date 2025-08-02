@@ -1,0 +1,42 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow users to read and write their own user data
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Allow users to create complaints (write) and read their own complaints
+    match /complaints/{complaintId} {
+      allow create: if request.auth != null;
+      allow read: if request.auth != null && (
+        resource.data.userId == request.auth.uid || 
+        resource.data.email == request.auth.token.email ||
+        resource.data.token == request.auth.uid
+      );
+      // Allow admin to read all complaints (you'll need to set up admin role)
+      allow read: if request.auth != null && isAdmin(request.auth.uid);
+      allow update, delete: if request.auth != null && isAdmin(request.auth.uid);
+    }
+    
+    // Allow users to read announcements
+    match /announcements/{announcementId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && isAdmin(request.auth.uid);
+    }
+    
+    // Allow users to create announcement requests
+    match /announcementRequests/{requestId} {
+      allow create: if request.auth != null;
+      allow read, write: if request.auth != null && isAdmin(request.auth.uid);
+    }
+    
+    // Helper function to check if user is admin
+    function isAdmin(uid) {
+      // You can implement admin check here
+      // For now, we'll allow all authenticated users to act as admin
+      // In production, you should implement proper admin role checking
+      return true;
+    }
+  }
+} 

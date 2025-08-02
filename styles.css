@@ -12190,3 +12190,14 @@ input[type="checkbox"] {
         font-size: 2rem;
     }
 }
+
+/* Admin button styling */
+.auth-btn.admin {
+    background: #d32f2f;
+    box-shadow: 0 2px 4px rgba(211, 47, 47, 0.2);
+}
+
+.auth-btn.admin:hover {
+    background: #b71c1c;
+    box-shadow: 0 4px 8px rgba(211, 47, 47, 0.3);
+}

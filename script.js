@@ -229,6 +229,7 @@ function setupIndexPage() {
   const loginBtn = document.getElementById('loginBtn');
   const anonymousBtn = document.getElementById('anonymousBtn');
   const submitComplaintBtn = document.getElementById('submitComplaintBtn');
+  const adminLoginBtn = document.getElementById('adminLoginBtn');
   const cancelComplaintBtn = document.getElementById('cancelComplaintBtn');
   const nameEmailFields = document.getElementById('nameEmailFields');
   const emailFields = document.getElementById('emailFields');
@@ -248,6 +249,12 @@ function setupIndexPage() {
   if (submitComplaintBtn) {
     submitComplaintBtn.onclick = function() {
       window.location.href = 'complaint.html';
+    };
+  }
+
+  if (adminLoginBtn) {
+    adminLoginBtn.onclick = function() {
+      window.location.href = 'admin-dashboard.html';
     };
   }
 
@@ -1617,6 +1624,26 @@ function showComplaintDetails(id, data) {
 
 // --- Admin Dashboard Logic ---
 function setupAdminDashboard() {
+  // Check if user is authenticated
+  auth.onAuthStateChanged(function(user) {
+    if (!user) {
+      // If not authenticated, redirect to login
+      window.location.href = 'login.html';
+      return;
+    }
+    
+    // User is authenticated, proceed with admin dashboard setup
+    console.log('Admin authenticated:', user.email);
+    
+    // Load admin data only after authentication
+    setupSidebar();
+    setupAnnouncementBar();
+    loadAdminAnnouncementRequests();
+    loadAdminAnnouncements();
+    loadAdminComplaints();
+    loadAdminResolvedComplaints();
+  });
+  
   // Show dashboard on button click
   const adminWelcomeModal = document.getElementById('adminWelcomeModal');
   const adminEnterBtn = document.getElementById('adminEnterBtn');
@@ -1651,58 +1678,54 @@ function setupAdminDashboard() {
       hideResolutionModal();
     };
   }
-  
-  setupSidebar();
-  setupAnnouncementBar();
-  loadAdminAnnouncementRequests();
-  loadAdminAnnouncements();
-  loadAdminComplaints();
-  loadAdminResolvedComplaints();
 
-  // Admin announcement submission logic
-  const adminAnnouncementForm = document.getElementById('adminAnnouncementForm');
-  const adminAnnouncementText = document.getElementById('adminAnnouncementText');
-  const adminAnnouncementResult = document.getElementById('adminAnnouncementResult');
-  if (adminAnnouncementForm && adminAnnouncementText) {
-    adminAnnouncementForm.onsubmit = async function(e) {
-      e.preventDefault();
-      const text = adminAnnouncementText.value.trim();
-      if (!text) return;
-      try {
-        await db.collection('announcements').add({
-          text,
-          status: 'approved',
-          createdBy: 'admin',
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        adminAnnouncementText.value = '';
-        if (adminAnnouncementResult) {
-          adminAnnouncementResult.style.color = '#388e3c';
-          adminAnnouncementResult.textContent = 'Announcement added and visible to users!';
-          setTimeout(() => { adminAnnouncementResult.textContent = ''; }, 3000);
-        }
-        setupAnnouncementBar(); // Refresh announcement bar for admin
-        loadAdminAnnouncements(); // Refresh admin's own list
-      } catch (err) {
-        if (adminAnnouncementResult) {
-          adminAnnouncementResult.style.color = '#e53935';
-          adminAnnouncementResult.textContent = 'Failed to add announcement.';
-          setTimeout(() => { adminAnnouncementResult.textContent = ''; }, 3000);
-        }
+  // Admin announcement submission logic and refresh button setup
+  auth.onAuthStateChanged(function(user) {
+    if (user) {
+      const adminAnnouncementForm = document.getElementById('adminAnnouncementForm');
+      const adminAnnouncementText = document.getElementById('adminAnnouncementText');
+      const adminAnnouncementResult = document.getElementById('adminAnnouncementResult');
+      if (adminAnnouncementForm && adminAnnouncementText) {
+        adminAnnouncementForm.onsubmit = async function(e) {
+          e.preventDefault();
+          const text = adminAnnouncementText.value.trim();
+          if (!text) return;
+          try {
+            await db.collection('announcements').add({
+              text,
+              status: 'approved',
+              createdBy: 'admin',
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            adminAnnouncementText.value = '';
+            if (adminAnnouncementResult) {
+              adminAnnouncementResult.style.color = '#388e3c';
+              adminAnnouncementResult.textContent = 'Announcement added and visible to users!';
+              setTimeout(() => { adminAnnouncementResult.textContent = ''; }, 3000);
+            }
+            setupAnnouncementBar(); // Refresh announcement bar for admin
+            loadAdminAnnouncements(); // Refresh admin's own list
+          } catch (err) {
+            if (adminAnnouncementResult) {
+              adminAnnouncementResult.style.color = '#e53935';
+              adminAnnouncementResult.textContent = 'Failed to add announcement.';
+              setTimeout(() => { adminAnnouncementResult.textContent = ''; }, 3000);
+            }
+          }
+        };
       }
-    };
-  }
-  // Add more admin-specific logic as needed (e.g., fetch complaints, manage announcements)
 
-  const refreshBtn = document.getElementById('refreshBtn');
-  if (refreshBtn) {
-    refreshBtn.onclick = function() {
-      loadAdminAnnouncementRequests();
-      loadAdminAnnouncements();
-      loadAdminComplaints();
-      loadAdminResolvedComplaints();
-    };
-  }
+      const refreshBtn = document.getElementById('refreshBtn');
+      if (refreshBtn) {
+        refreshBtn.onclick = function() {
+          loadAdminAnnouncementRequests();
+          loadAdminAnnouncements();
+          loadAdminComplaints();
+          loadAdminResolvedComplaints();
+        };
+      }
+    }
+  });
 }
 
 // --- Main Entrypoint ---
